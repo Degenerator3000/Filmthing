@@ -1,0 +1,199 @@
+# config/detekt/detekt.yml
+# Overlay поверх buildUponDefaultConfig = true.
+# Настраиваем только то, что отличается от дефолта.
+
+build:
+  # Любое нарушение валит сборку. Для нового проекта это правильно:
+  # не накапливаем долг с первого дня.
+  maxIssues: 0
+  # Не считаем «исправимые» правила (formatting) отдельными issues,
+  # чтобы ktlint и detekt не дублировали друг друга в весе.
+  excludeCorrectable: false
+  weights:
+    # Архитектурные проблемы (complexity) весят больше стилевых.
+    complexity: 2
+    LongParameterList: 1
+    style: 1
+    comments: 1
+
+config:
+  validation: true
+  warningsAsErrors: false   # для CI можно включить true, локально — false
+
+# =============================================================================
+# COMPLEXITY — архитектурные ограничения
+# =============================================================================
+complexity:
+  active: true
+
+  # Длинные методы — главный источник проблем в Clean Architecture.
+  # 60 строк для MVP — мягкий порог. Через месяц можно ужесточить до 40–50.
+  LongMethod:
+    active: true
+    threshold: 60
+    ignoreAnnotated:
+      - 'Composable'   # Compose-функции могут быть длинными из-за layout-кода
+
+  # Слишком много функций в классе — сигнал, что класс нарушает SRP.
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 15
+    thresholdInClasses: 15
+    thresholdInInterfaces: 11
+    thresholdInObjects: 11
+    ignorePrivate: true
+    ignoreAnnotatedFunctions:
+      - 'Preview'      # preview-функции не добавляют сложности
+      - 'Composable'
+
+  # Слишком много параметров — для Compose это нормально из-за модификаторов и колбэков.
+  # Официальная рекомендация detekt: поднять порог или игнорировать default-параметры.
+  LongParameterList:
+    active: true
+    functionThreshold: 8   # было 6, для Compose 8 — разумно
+    constructorThreshold: 8
+    ignoreDefaultParameters: true
+    ignoreAnnotated:
+      - 'Composable'
+
+  # Цикломатическая сложность — оставляем дефолт, но фиксируем явно.
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+
+  # Когнитивная сложность — часто шумит на Compose, поэтому отключаем.
+  # При желании можно включить с threshold: 20.
+  CognitiveComplexMethod:
+    active: false
+
+# =============================================================================
+# NAMING — имена
+# =============================================================================
+naming:
+  active: true
+
+  # Compose: @Composable-функции в PascalCase — официальная рекомендация detekt.
+  FunctionNaming:
+    active: true
+    ignoreAnnotated:
+      - 'Composable'
+
+  # Compose: top-level константы пишутся в CamelCase (FooPadding), а не FOO_PADDING.
+  # Если проект следует Compose guidelines — ослабляем паттерн.
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][A-Za-z0-9]*'
+
+  # Остальные naming-правила оставляем дефолтными (PackageNaming, ClassNaming и т.д.).
+
+# =============================================================================
+# STYLE — стилевые и потенциально опасные конструкции
+# =============================================================================
+style:
+  active: true
+
+  # MagicNumber: отключаем для объявлений свойств (цвета, dp, константы темы).
+  # Официальная рекомендация detekt для Compose.
+  MagicNumber:
+    active: true
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+      - '100'
+      - '1000'
+    ignoreHashCodeFunction: true
+    ignoreAnnotation: true
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+
+  # UnusedPrivateMember: preview-функции выглядят «неиспользуемыми», но это норма.
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - 'Preview'
+      # Мульти-превью (PreviewLightDark, PreviewScreenSizes и т.д.) тоже стоит добавить,
+      # если начнёшь их использовать: ignoreAnnotated: ['Preview', 'PreviewLightDark', ...]
+
+  # Запрещённые комментарии: FIXME не должен попадать в main.
+  # В реальных проектах часто запрещают FIXME и оставляют только TODO.
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: 'FIXME не должен попадать в main. Используй TODO или заведи задачу.'
+        value: 'FIXME:'
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+
+  # Wildcard imports — запрещены, кроме тестов (где иногда удобно).
+  WildcardImport:
+    active: true
+    excludeImports:
+      - 'java.util.*'
+
+  # Не более одной пустой строки подряд — уже есть в ktlint, но detekt тоже проверяет.
+  # Оставляем дефолт.
+
+# =============================================================================
+# POTENTIAL-BUGS — потенциальные баги
+# =============================================================================
+potential-bugs:
+  active: true
+
+  # Не игнорировать возвращаемые значения функций — частая ошибка в корутинах.
+  IgnoredReturnValue:
+    active: true
+    restrictToConfig: true
+    returnValueAnnotations:
+      - 'CheckResult'
+      - '*.CheckResult'
+
+  # Lateinit: проверяем, что переменная инициализирована до использования.
+  LateinitUsage:
+    active: true
+    excludeAnnotatedProperties:
+      - 'Inject'   # DI-фреймворки иногда требуют lateinit
+
+  # Остальные potential-bugs — дефолт.
+
+# =============================================================================
+# EXCEPTIONS — работа с исключениями
+# =============================================================================
+exceptions:
+  active: true
+
+  # Не глотать исключения (catch с пустым телом).
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - 'ArrayIndexOutOfBoundsException'
+      - 'Error'
+      - 'Exception'
+      - 'IllegalMonitorStateException'
+      - 'IndexOutOfBoundsException'
+      - 'NullPointerException'
+      - 'RuntimeException'
+      - 'Throwable'
+
+# =============================================================================
+# COROUTINES — правила для корутин
+# =============================================================================
+coroutines:
+  active: true
+
+  # GlobalScope — почти всегда ошибка. Запрещаем.
+  GlobalCoroutineUsage:
+    active: true
+
+  # RedundantSuspendModifier — лишний suspend там, где он не нужен.
+  RedundantSuspendModifier:
+    active: true
+
+  # SleepInsteadOfDelay — Thread.sleep в корутинах блокирует поток.
+  SleepInsteadOfDelay:
+    active: true
