@@ -29,14 +29,10 @@ android {
         // Проверять и зависимости (важно, когда появятся library-модули).
         checkDependencies = true
 
+        lintConfig = file("$rootDir/lint.xml")
         // Baseline — «заморозка» существующих проблем, чтобы проверялись только новые.
         // Для нового проекта не нужен. Включи, когда появится легаси.
         // baseline = file("lint-baseline.xml")
-
-        // Отчёты: HTML для человека, XML/SARIF для CI и GitHub Code Scanning.
-        htmlReport = true
-        xmlReport = true
-        sarifReport = true
 
         // Не проверять тестовые исходники на некоторые правила (опционально).
         // checkTestSources = false

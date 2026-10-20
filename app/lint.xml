@@ -1,0 +1,7 @@
+<lint>
+    <!-- Отключаем проверки, связанные с версиями Gradle и AGP -->
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+    <issue id="GradlePluginVersion" severity="ignore" />
+    <issue id="GradleDependency" severity="ignore" />
+    <issue id="NewerVersionAvailable" severity="ignore" />
+</lint>
