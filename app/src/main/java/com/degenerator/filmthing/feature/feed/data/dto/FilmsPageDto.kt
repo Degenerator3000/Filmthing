@@ -12,7 +12,4 @@ import kotlinx.serialization.Serializable
  * null означает, что порций больше нет
  */
 @Serializable
-data class FilmsPageDto (
-    val docs: List<FilmDto> = emptyList(),
-    val next: String? = null,
-)
+data class FilmsPageDto(val docs: List<FilmDto> = emptyList(), val next: String? = null)

@@ -10,5 +10,5 @@ data class Film(
     val name: String,
     val shortDescription: String?,
     val posterUrl: String?,
-    val rating: Double?
+    val rating: Double?,
 )

@@ -21,24 +21,18 @@ data class FilmDto(
  * Элемент списка альтернативных названий фильма
  */
 @Serializable
-data class NameDto(
-    val name: String,
-)
+data class NameDto(val language: String?, val name: String)
 
 /**
  * Постер фильма. Содержит полный и превью URL;
  * для карточки ленты используется [url].
  */
 @Serializable
-data class PosterDto(
-    val url: String? = null,
-)
+data class PosterDto(val url: String? = null)
 
 /**
  * Рейтинги фильма из разных источников.
  * В домен маппится только [kp] (Кинопоиск)
  */
 @Serializable
-data class RatingDto(
-    val kp: Double? = null,
-)
+data class RatingDto(val kp: Double? = null)
