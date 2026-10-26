@@ -1,4 +1,4 @@
-package com.degenerator.filmthing.feature.feed.data.dto
+package com.degenerator.filmthing.feature.feed.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
@@ -22,7 +22,6 @@ data class FilmDto(
  */
 @Serializable
 data class NameDto(val language: String?, val name: String)
-
 /**
  * Постер фильма. Содержит полный и превью URL;
  * для карточки ленты используется [url].
