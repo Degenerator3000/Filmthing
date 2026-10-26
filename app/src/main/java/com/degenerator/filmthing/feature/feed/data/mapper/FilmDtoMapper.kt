@@ -1,6 +1,6 @@
 package com.degenerator.filmthing.feature.feed.data.mapper
 
-import com.degenerator.filmthing.feature.feed.data.local.entity.FilmEntity
+import com.degenerator.filmthing.core.database.feed.entity.FilmEntity
 import com.degenerator.filmthing.feature.feed.data.remote.dto.FilmDto
 
 /**

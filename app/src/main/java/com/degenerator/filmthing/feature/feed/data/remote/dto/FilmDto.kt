@@ -1,10 +1,10 @@
 package com.degenerator.filmthing.feature.feed.data.remote.dto
 
+import com.degenerator.filmthing.core.database.feed.entity.FilmEntity
 import kotlinx.serialization.Serializable
-
 /**
  * Сетевое представление фильма из ответа Kinopoisk API.
- * Маппится в Film через toEntity()
+ * Маппится в [FilmEntity] через toEntity()
  *
  * @property names список названий фильма на разных языках
  */
@@ -31,7 +31,7 @@ data class PosterDto(val url: String? = null)
 
 /**
  * Рейтинги фильма из разных источников.
- * В домен маппится только [kp] (Кинопоиск)
+ * В сущность маппится только [kp] (Кинопоиск)
  */
 @Serializable
 data class RatingDto(val kp: Double? = null)
