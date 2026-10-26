@@ -1,6 +1,6 @@
 package com.degenerator.filmthing.feature.feed.data.remote
 
-import com.degenerator.filmthing.feature.feed.data.dto.FilmsPageDto
+import com.degenerator.filmthing.feature.feed.data.remote.dto.FilmsPageDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

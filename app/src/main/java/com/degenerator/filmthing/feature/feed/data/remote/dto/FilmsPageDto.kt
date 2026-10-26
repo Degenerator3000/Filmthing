@@ -1,4 +1,4 @@
-package com.degenerator.filmthing.feature.feed.data.dto
+package com.degenerator.filmthing.feature.feed.data.remote.dto
 
 import com.degenerator.filmthing.feature.feed.domain.entity.FilmsPage
 import kotlinx.serialization.Serializable
