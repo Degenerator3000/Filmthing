@@ -1,11 +1,14 @@
-package com.degenerator.filmthing.feature.feed.data.local.dao
+package com.degenerator.filmthing.core.database.feed.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.degenerator.filmthing.feature.feed.data.local.entity.RemoteKeyEntity
+import com.degenerator.filmthing.core.database.feed.entity.RemoteKeyEntity
 
+/**
+ * Хранит курсоры пагинации в Room. Один курсор на queryKey
+ */
 @Dao
 interface RemoteKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

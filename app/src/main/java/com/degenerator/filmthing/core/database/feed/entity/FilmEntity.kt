@@ -1,8 +1,13 @@
-package com.degenerator.filmthing.feature.feed.data.local.entity
+package com.degenerator.filmthing.core.database.feed.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Представление фильма в базе данных
+ *
+ * @property id первичный ключ
+ */
 @Entity(tableName = "films")
 data class FilmEntity(
     @PrimaryKey val id: Int,
