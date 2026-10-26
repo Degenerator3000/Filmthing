@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.degenerator.filmthing.feature.feed.data.local.entity.FilmEntity
 
 @Dao
 interface FilmDao {
@@ -12,7 +13,7 @@ interface FilmDao {
     fun getFilmsPagingSource(): PagingSource<Int, RemoteKeyDao>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(films: List<RemoteKeyDao>)
+    suspend fun insertAll(films: List<FilmEntity>)
 
     @Query("DELETE FROM films")
     suspend fun clearAll()

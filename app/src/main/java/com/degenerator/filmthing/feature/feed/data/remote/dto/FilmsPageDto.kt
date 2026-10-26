@@ -8,8 +8,7 @@ import kotlinx.serialization.Serializable
  * Маппится в [FilmsPage] через toEntity()
  *
  * @property docs список фильмов в текущей порции
- * @property next курсор для получения следующей порции;
- * null означает, что порций больше нет
+ * @property next курсор для получения следующей порции; * null означает, что порций больше нет
  */
 @Serializable
 data class FilmsPageDto(val docs: List<FilmDto> = emptyList(), val next: String? = null)

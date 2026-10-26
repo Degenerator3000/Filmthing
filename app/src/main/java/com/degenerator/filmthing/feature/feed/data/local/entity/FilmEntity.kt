@@ -9,5 +9,5 @@ data class FilmEntity(
     val name: String,
     val shortDescription: String?,
     val posterUrl: String?,
-    val rating: Float?,
+    val rating: Double?,
 )
