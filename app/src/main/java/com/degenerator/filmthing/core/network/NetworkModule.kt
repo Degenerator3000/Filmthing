@@ -39,7 +39,7 @@ fun provideOkHttpClient(): OkHttpClient {
 
 /**
  * Создаёт singleton [Retrofit] с конвертером `kotlinx.serialization`.
- * [JsonBuilder.ignoreUnknownKeys] отключён
+ * [JsonBuilder.ignoreUnknownKeys] включён
  */
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     val json = Json { ignoreUnknownKeys = true }

@@ -13,7 +13,6 @@ import retrofit2.HttpException
 import java.io.IOException
 
 
-@OptIn(ExperimentalPagingApi::class)
 /**
  * Мост между [FeedApi] и Room для ленты фильмов.
  *
@@ -25,6 +24,7 @@ import java.io.IOException
  * @param sortField по какому параметру сортировать
  * @param sortType направление сортировки
  */
+@OptIn(ExperimentalPagingApi::class)
 class FeedRemoteMediator(
     private val queryKey: String,
     private val sortField: String,
@@ -32,6 +32,14 @@ class FeedRemoteMediator(
     private val database: AppDatabase,
     private val feedApi: FeedApi,
 ) : RemoteMediator<Int, FilmEntity>() {
+    /**
+     * Очистка всех старых лент, кроме текущей
+     */
+    override suspend fun initialize(): InitializeAction {
+        remoteKeyDao.deleteFeedKeysExcept(queryKey)
+        filmDao.deleteFeedFilmsExcept(queryKey)
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
 
     private val filmDao = database.filmDao()
     private val remoteKeyDao = database.remoteKeyDao()
@@ -70,11 +78,21 @@ class FeedRemoteMediator(
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    filmDao.clearAll()
-                    remoteKeyDao.deleteByQuery(queryKey)
+                    filmDao.deleteByQuery(queryKey)
                 }
                 remoteKeyDao.insertOrReplace(RemoteKeyEntity(queryKey, response.next))
-                filmDao.insertAll(response.docs.mapNotNull { it.toEntity() })
+
+                val startOrder = if (loadType == LoadType.REFRESH) {
+                    0
+                } else {
+                    (filmDao.getMaxSortOrder(queryKey) ?: -1) + 1
+                }
+
+                filmDao.insertAll(
+                    response.docs.mapIndexedNotNull { index, dto ->
+                        dto.toEntity(queryKey, startOrder + index)
+                    }
+                )
             }
 
             MediatorResult.Success(endOfPaginationReached = response.next == null)

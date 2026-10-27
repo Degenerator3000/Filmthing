@@ -6,11 +6,15 @@ import androidx.room.PrimaryKey
 /**
  * Представление фильма в базе данных
  *
- * @property id первичный ключ
+ * @property id идентификатор конкретного фильма
+ * @property queryKey идентификатор для привязки фильма к циклу пагинации
+ * @property sortOrder порядок получения карточки из апи. Нужен для корректной работы Paging
  */
-@Entity(tableName = "films")
+@Entity(tableName = "films", primaryKeys = ["id", "queryKey"])
 data class FilmEntity(
-    @PrimaryKey val id: Int,
+    val id: Int,
+    val queryKey: String,
+    val sortOrder: Int,
     val name: String,
     val shortDescription: String?,
     val posterUrl: String?,

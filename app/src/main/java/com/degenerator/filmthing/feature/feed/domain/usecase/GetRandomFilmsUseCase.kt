@@ -1,6 +1,8 @@
 package com.degenerator.filmthing.feature.feed.domain.usecase
-import com.degenerator.filmthing.feature.feed.domain.entity.FilmsPage
+import androidx.paging.PagingData
+import com.degenerator.filmthing.feature.feed.domain.entity.Film
 import com.degenerator.filmthing.feature.feed.domain.repository.FeedRepository
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Получение группы случайных фильмов
@@ -8,10 +10,7 @@ import com.degenerator.filmthing.feature.feed.domain.repository.FeedRepository
 
 class GetRandomFilmsUseCase(private val feedRepository: FeedRepository) {
     /**
-     * @param cursor токен для получения следующей порции; null — первый запрос
-     * @param limit количество фильмов в порции; на последней порции может быть меньше
-     * @return [FilmsPage] с фильмами и курсором для следующего запроса
-     * @throws java.io.IOException при ошибке сети или парсинга ответа
+     * @return @return [Flow] с [PagingData] [Film].
      */
-    suspend operator fun invoke(cursor: String?, limit: Int): FilmsPage = feedRepository.getRandomFilms(cursor, limit)
+    fun invoke(): Flow<PagingData<Film>> = feedRepository.getRandomFilms()
 }

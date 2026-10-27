@@ -8,12 +8,14 @@ import com.degenerator.filmthing.feature.feed.data.remote.dto.FilmDto
  *
  * @return [FilmEntity] или null если у DTO нет ни одного названия
  */
-fun FilmDto.toEntity(): FilmEntity? {
+fun FilmDto.toEntity(queryKey: String, sortOrder: Int): FilmEntity? {
     val resolvedName = names.firstOrNull { it.language == "RU" }?.name
         ?: names.firstOrNull()?.name
         ?: return null
     return FilmEntity(
         id = id,
+        queryKey = queryKey,
+        sortOrder = sortOrder,
         name = resolvedName,
         shortDescription = shortDescription,
         posterUrl = poster?.url,

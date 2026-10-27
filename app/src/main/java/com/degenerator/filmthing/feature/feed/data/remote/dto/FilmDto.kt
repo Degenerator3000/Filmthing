@@ -1,10 +1,9 @@
 package com.degenerator.filmthing.feature.feed.data.remote.dto
 
-import com.degenerator.filmthing.core.database.feed.entity.FilmEntity
 import kotlinx.serialization.Serializable
 /**
  * Сетевое представление фильма из ответа Kinopoisk API.
- * Маппится в [FilmEntity] через toEntity()
+ * Маппится в сущность БД через toEntity()
  *
  * @property names список названий фильма на разных языках
  */

@@ -17,6 +17,9 @@ interface RemoteKeyDao {
     @Query("SELECT * FROM remote_keys WHERE queryKey = :queryKey")
     suspend fun getRemoteKey(queryKey: String): RemoteKeyEntity?
 
+    @Query("DELETE FROM remote_keys WHERE queryKey LIKE 'feed_%' AND queryKey != :currentKey")
+    suspend fun deleteFeedKeysExcept(currentKey: String)
+
     @Query("DELETE FROM remote_keys WHERE queryKey = :queryKey")
     suspend fun deleteByQuery(queryKey: String)
 }

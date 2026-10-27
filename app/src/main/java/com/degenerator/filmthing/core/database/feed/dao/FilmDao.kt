@@ -12,12 +12,18 @@ import com.degenerator.filmthing.core.database.feed.entity.FilmEntity
  */
 @Dao
 interface FilmDao {
-    @Query("SELECT * FROM films ORDER BY id")
-    fun getFilmsPagingSource(): PagingSource<Int, FilmEntity>
+    @Query("SELECT * FROM films WHERE queryKey = :queryKey ORDER BY sortOrder ASC")
+    fun getFilmsPagingSource(queryKey: String): PagingSource<Int, FilmEntity>
+
+    @Query("SELECT MAX(sortOrder) FROM films WHERE queryKey = :queryKey")
+    suspend fun getMaxSortOrder(queryKey: String): Int?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(films: List<FilmEntity>)
 
-    @Query("DELETE FROM films")
-    suspend fun clearAll()
+    @Query("DELETE FROM films WHERE queryKey LIKE 'feed_%' AND queryKey != :currentKey")
+    suspend fun deleteFeedFilmsExcept(currentKey: String)
+
+    @Query("DELETE FROM films WHERE queryKey = :queryKey")
+    suspend fun deleteByQuery(queryKey: String)
 }
