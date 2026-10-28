@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.android.application)
 }
 
 ktlint {
@@ -110,6 +111,7 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
     androidTestImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.koin.android.test)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
