@@ -1,7 +1,6 @@
 package com.degenerator.filmthing.core.database.feed.entity
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 /**
  * Представление фильма в базе данных

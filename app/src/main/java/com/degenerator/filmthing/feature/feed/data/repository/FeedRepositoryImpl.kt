@@ -43,7 +43,7 @@ class FeedRepositoryImpl(
     private fun newQueryKey(): Pair<String, Pair<String, String>> {
         val sortField = sortFields.random()
         val sortType = sortTypes.random()
-        return "feed_${sortField}_${sortType}" to (sortField to sortType)
+        return "feed_${sortField}_$sortType" to (sortField to sortType)
     }
 
     /**

@@ -10,7 +10,4 @@ import androidx.room.PrimaryKey
  * @property nextKey курсор для получения следующей порции
  */
 @Entity(tableName = "remote_keys")
-data class RemoteKeyEntity(
-    @PrimaryKey val queryKey: String,
-    val nextKey: String?,
-)
+data class RemoteKeyEntity(@PrimaryKey val queryKey: String, val nextKey: String?)

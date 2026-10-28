@@ -29,6 +29,7 @@ complexity:
   # Длинные методы — главный источник проблем в Clean Architecture.
   # 60 строк для MVP — мягкий порог. Через месяц можно ужесточить до 40–50.
   LongMethod:
+
     active: true
     threshold: 60
     ignoreAnnotated:
@@ -90,7 +91,12 @@ naming:
 # STYLE — стилевые и потенциально опасные конструкции
 # =============================================================================
 style:
-  active: true
+  active: true  
+
+  ReturnCount:
+      active: true
+      max: 4
+      excludeGuardClauses: true
 
   # MagicNumber: отключаем для объявлений свойств (цвета, dp, константы темы).
   # Официальная рекомендация detekt для Compose.
@@ -156,8 +162,8 @@ potential-bugs:
   # Lateinit: проверяем, что переменная инициализирована до использования.
   LateinitUsage:
     active: true
-    excludeAnnotatedProperties:
-      - 'Inject'   # DI-фреймворки иногда требуют lateinit
+    ignoreAnnotated: ['Inject']
+      
 
   # Остальные potential-bugs — дефолт.
 

@@ -9,9 +9,8 @@ import com.degenerator.filmthing.core.database.AppDatabase
 import com.degenerator.filmthing.core.database.feed.entity.FilmEntity
 import com.degenerator.filmthing.core.database.feed.entity.RemoteKeyEntity
 import com.degenerator.filmthing.feature.feed.data.mapper.toEntity
-import retrofit2.HttpException
 import java.io.IOException
-
+import retrofit2.HttpException
 
 /**
  * Мост между [FeedApi] и Room для ленты фильмов.
@@ -54,10 +53,7 @@ class FeedRemoteMediator(
      * если API вернул `next == null`, иначе [MediatorResult.Error]
      * при [IOException] или [HttpException]
      */
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, FilmEntity>,
-    ): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, FilmEntity>): MediatorResult {
         val loadKey: String? = when (loadType) {
             LoadType.REFRESH -> null
             LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
@@ -91,7 +87,7 @@ class FeedRemoteMediator(
                 filmDao.insertAll(
                     response.docs.mapIndexedNotNull { index, dto ->
                         dto.toEntity(queryKey, startOrder + index)
-                    }
+                    },
                 )
             }
 

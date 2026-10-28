@@ -24,7 +24,11 @@ interface FeedApi {
         @Query("sortField") sortField: String = "id",
         @Query("sortType") sortType: String = "1",
         @Query("selectFields") selectFields: List<String> = listOf(
-            "id", "names", "shortDescription", "poster", "rating"
-        )
+            "id",
+            "names",
+            "shortDescription",
+            "poster",
+            "rating",
+        ),
     ): FilmsPageDto
 }
