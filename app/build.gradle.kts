@@ -11,34 +11,28 @@ plugins {
 
 ktlint {
     android.set(true)
-    ignoreFailures.set(false) // падать при нарушениях — для CI
+    ignoreFailures.set(false)
 }
 
 detekt {
-    buildUponDefaultConfig = true // берём дефолтные правила как основу
-    allRules = false // не включаем все правила сразу — слишком агрессивно
+    buildUponDefaultConfig = true
+    allRules = false //
     config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
-    parallel = true // ускоряет анализ
+    parallel = true
 }
 
 android {
     lint {
-        // Падать при ошибках (по умолчанию true, но фиксируем явно).
         abortOnError = true
 
-        // В CI: трактовать все warnings как errors.
-        // Локально можно поставить false, если шумно.
         warningsAsErrors = true
 
-        // Проверять и зависимости (важно, когда появятся library-модули).
+        // Проверять и зависимости.
         checkDependencies = true
 
         lintConfig = file("$rootDir/lint.xml")
-        // Baseline — «заморозка» существующих проблем, чтобы проверялись только новые.
-        // Для нового проекта не нужен. Включи, когда появится легаси.
-        // baseline = file("lint-baseline.xml")
 
-        // Не проверять тестовые исходники на некоторые правила (опционально).
+        // Не проверять тестовые исходники на некоторые правила.
         // checkTestSources = false
     }
     namespace = "com.degenerator.filmthing"
@@ -104,9 +98,12 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
-
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
