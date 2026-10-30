@@ -109,8 +109,10 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
     androidTestImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
     testImplementation(libs.koin.android.test)
+    testImplementation(libs.paging.testing)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {

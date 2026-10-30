@@ -19,6 +19,9 @@ room = "2.8.5"
 paging = "3.5.1"
 ksp = "2.2.10-2.0.2"
 koin = "4.1.1"
+pagingTesting = "3.3.2"
+mockk = "1.14.11"
+coroutinesTest = "1.10.2"
 
 
 [libraries]
@@ -57,6 +60,10 @@ junit4 = { module = "junit:junit", version.ref = "junit4" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 koin-android-test = { module = "io.insert-koin:koin-android-test" }
+paging-testing = { module = "androidx.paging:paging-testing", version.ref = "pagingTesting" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
