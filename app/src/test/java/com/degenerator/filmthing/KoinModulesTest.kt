@@ -1,4 +1,4 @@
-package com.example.filmthing
+package com.degenerator.filmthing
 
 import org.junit.jupiter.api.Test
 import org.koin.dsl.module

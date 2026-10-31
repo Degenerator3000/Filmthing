@@ -1,4 +1,4 @@
-package com.example.filmthing
+package com.degenerator.filmthing
 
 import androidx.paging.testing.asSnapshot
 import com.degenerator.filmthing.core.database.AppDatabase
@@ -47,7 +47,7 @@ class FeedRepositoryImplTest {
 
         @Test
         fun `getRandomFilms returns empty list when API returns empty response`() = runTest {
-            coEvery { feedApi.getMovies(any(), any(), any(), any()) } returns FilmsPageDto(
+            coEvery { feedApi.getMovies(any(), any(), any(), any(), any()) } returns FilmsPageDto(
                 docs = emptyList(),
                 next = null
             )
@@ -69,7 +69,7 @@ class FeedRepositoryImplTest {
                 poster = PosterDto(url = "https://example.com/poster.jpeg"),
                 rating = RatingDto(kp = 8.5)
             )
-            coEvery { feedApi.getMovies(any(), any(), any(), any()) } returns
+            coEvery { feedApi.getMovies(any(), any(), any(), any(), any()) } returns
                 FilmsPageDto(
                 docs = listOf(filmDto),
                 next = null
@@ -99,7 +99,7 @@ class FeedRepositoryImplTest {
                 poster = null,
                 rating = null
             )
-            coEvery { feedApi.getMovies(any(), any(), any(), any()) } returns
+            coEvery { feedApi.getMovies(any(), any(), any(), any(), any()) } returns
                 FilmsPageDto(
                 docs = listOf(filmDto),
                 next = null
@@ -127,6 +127,29 @@ class FeedRepositoryImplTest {
             // Для проверки ошибки в LoadState потребовался бы более сложный тест,
             // но для базового сценария достаточно убедиться, что список пуст.
             assertTrue { result.isEmpty() }
+        }
+
+        @Test
+        fun `getRandomFilms does not emit films without valid name`() = runTest {
+            // Given: API вернул фильм без названий в поле names
+            val filmDto = FilmDto(
+                id = 3,
+                names = listOf(),
+                shortDescription = "Описание",
+                poster = PosterDto(url = "https://example.com/poster.jpeg"),
+                rating = RatingDto(kp = 8.5)
+            )
+            coEvery { feedApi.getMovies(any(), any(), any(), any(), any()) } returns
+                FilmsPageDto(
+                    docs = listOf(filmDto),
+                    next = null
+                )
+
+            // When
+            val result = repository.getRandomFilms().asSnapshot()
+
+            // Then поток не эмитит фильмы без названия
+            assertTrue(result.isEmpty(), "Ожидался пустой список, но получен: $result")
         }
 
     }

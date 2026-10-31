@@ -1,4 +1,4 @@
-package com.example.filmthing
+package com.degenerator.filmthing
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
